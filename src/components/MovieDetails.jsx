@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { asyncLoadMovies, removemovie } from "../store/actions/MovieAction";
 import { useNavigate, useParams, Link, useLocation, Outlet } from "react-router-dom";
-import Loading from "../Components/Loading";
+import Loading from "./Loading";
 import HorizonatlCards from './partials/HorizontalCard'
 function MovieDetails() {
   // when we want to use the data of routes we use useParams
