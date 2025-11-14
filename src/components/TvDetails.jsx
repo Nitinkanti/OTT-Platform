@@ -8,15 +8,15 @@ import {
   useLocation,
   Outlet,
 } from "react-router-dom";
-import Loading from "../Components/Loading";
-import HorizonatlCards from "./partials/HorizontalCard";
+import Loading from "./Loading";  // ✅ CHANGED PATH
+import HorizonatlCards from "./partials/HorizontalCard";  // ✅ CHECK THIS PATH
+
 function TvDetails() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
   const { info } = useSelector((state) => state.tv);
   const dispatch = useDispatch();
-  // console.log(info);
 
   useEffect(() => {
     dispatch(asyncLoadTvs(id));
@@ -24,6 +24,7 @@ function TvDetails() {
       dispatch(removeTv());
     };
   }, [id]);
+
   return info ? (
     <div
       style={{
@@ -32,9 +33,9 @@ function TvDetails() {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
-      // part1 navigation
       className="relative w-screen h-[178vh] px-[10%]"
     >
+      {/* Navigation */}
       <nav className="h-[10vh] w-full items-center text-zinc-100 flex gap-10 text-2xl">
         <Link
           onClick={() => navigate(-1)}
@@ -57,17 +58,17 @@ function TvDetails() {
         </a>
       </nav>
 
-      {/* part 2 poster and our details page */}
+      {/* Poster and Details */}
       <div className="w-full flex ">
         <img
           className="shadow-[8px_17px_38px_2px_rgba(0,0,0,.5)] h-[50vh] object-cover rounded-xl"
-          src={`https://image.tmdb.org/t/p/original/${info.detail.poster_path || info.detail.backdrop_path
-            }`}
+          src={`https://image.tmdb.org/t/p/original/${
+            info.detail.poster_path || info.detail.backdrop_path
+          }`}
           alt=""
         />
         <div className="content ml-[5%]">
           <h1 className="text-5xl font-black text-white">
-            {" "}
             {info.detail.original_title ||
               info.detail.title ||
               info.detail.name ||
@@ -86,7 +87,6 @@ function TvDetails() {
             </h1>
             <h1>{info.detail.first_air_date}</h1>
             <h1>{info.detail.genres.map((g) => g.name).join(",")}</h1>
-
             <h1>{info.detail.runtime}min</h1>
           </div>
 
@@ -97,31 +97,30 @@ function TvDetails() {
           <h1 className="text-2xl mt-5 mb-1 text-white">Overview</h1>
           <p className="text-white">{info.detail.overview}</p>
 
-          <h1 className="text-2xl mt-5 mb-1 text-white">tv Translated</h1>
+          <h1 className="text-2xl mt-5 mb-1 text-white">TV Translated</h1>
           <p className="mb-10 text-white w-[100%]">
             {info.translations.join(", ")}
           </p>
 
           <Link
             to={`${pathname}/trailer`}
-            className=" mt-10 p-5 rounded-md bg-[#6556CD] text-white font-semibold "
+            className="mt-10 p-5 rounded-md bg-[#6556CD] text-white font-semibold"
           >
-            <i className="ri-play-line text-xl mr-3"></i>Play Trailer{" "}
+            <i className="ri-play-line text-xl mr-3"></i>Play Trailer
           </Link>
         </div>
       </div>
 
-      {/* part 3 avaiable platforms */}
-
-      <div className="w-[80%] flex flex-col gap-y-5 mt-10 ">
+      {/* Available Platforms */}
+      <div className="w-[80%] flex flex-col gap-y-5 mt-10">
         {info.watchproviders && info.watchproviders.flatrate && (
           <div className="flex gap-x-10 items-center text-white mb-3">
-            <h1>Available on platform</h1>
+            <h1>Available on Platform</h1>
             {info.watchproviders.flatrate.map((w, index) => (
               <img
                 key={index}
                 title={w.provider_name}
-                className="w-[6vh] h-[6vh]  object-cover rounded-md"
+                className="w-[6vh] h-[6vh] object-cover rounded-md"
                 src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
                 alt=""
               />
@@ -135,7 +134,7 @@ function TvDetails() {
             {info.watchproviders.buy.map((w, index) => (
               <img
                 title={w.provider_name}
-                className="w-[6vh] h-[6vh]  object-cover rounded-md"
+                className="w-[6vh] h-[6vh] object-cover rounded-md"
                 key={index}
                 src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
                 alt=""
@@ -143,13 +142,14 @@ function TvDetails() {
             ))}
           </div>
         )}
+        
         {info.watchproviders && info.watchproviders.rent && (
           <div className="flex gap-x-10 items-center text-white">
             <h1>Available on Rent</h1>
             {info.watchproviders.rent.map((w, index) => (
               <img
                 title={w.provider_name}
-                className="w-[6vh] h-[6vh]  object-cover rounded-md"
+                className="w-[6vh] h-[6vh] object-cover rounded-md"
                 key={index}
                 src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
                 alt=""
@@ -159,13 +159,11 @@ function TvDetails() {
         )}
       </div>
 
-      {/* part 4 seasons */}
-
-      {/* part 4 seasons */}
+      {/* Seasons */}
       {info.detail.seasons && info.detail.seasons.length > 0 && (
         <>
-          <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500 " />
-          <h1 className="mt-10 ml-5 text-3xl font-semibold text-white ">
+          <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500" />
+          <h1 className="mt-10 ml-5 text-3xl font-semibold text-white">
             Seasons
           </h1>
           <HorizonatlCards
@@ -174,15 +172,10 @@ function TvDetails() {
         </>
       )}
 
-
-
-
-
-
-      {/* part-5 recommendations & similar */}
-      <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500 " />
-      <h1 className="mt-10 ml-5 text-3xl font-semibold text-white ">
-        Recommendations & Similar Stuff{" "}
+      {/* Recommendations & Similar */}
+      <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500" />
+      <h1 className="mt-10 ml-5 text-3xl font-semibold text-white">
+        Recommendations & Similar Stuff
       </h1>
       <HorizonatlCards
         data={
